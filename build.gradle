@@ -25,6 +25,7 @@ dependencies {
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.2'
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+	compile group: 'com.google.guava', name: 'guava', version: '30.0-jre'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
