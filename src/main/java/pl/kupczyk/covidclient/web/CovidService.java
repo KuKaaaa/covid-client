@@ -8,61 +8,64 @@ import pl.kupczyk.covidclient.model.Data;
 import pl.kupczyk.covidclient.model.Region;
 import pl.kupczyk.covidclient.utils.DataUtils;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
 public class CovidService {
 
     private final DataUtils utils = new DataUtils();
-    private static final String URL = "https://covid-api.com/api/reports";
+    private final String URL = "https://covid-api.com/api/reports";
 
-    public List<Data> downloadData(){
+    public List<Data> fetchData() {
         RestTemplate restTemplate = new RestTemplate();
         CovidData list = restTemplate.getForObject(URL, CovidData.class);
 
         return Objects.requireNonNull(list).getData();
     }
 
-    public List<Integer> getConfirmed(){
+    public List<Integer> getConfirmed() {
 
-        return downloadData().stream().map(Data::getConfirmed)
+        return fetchData().stream().map(Data::getConfirmed)
                 .collect(Collectors.toList());
     }
 
-    public List<Integer> getDeaths(){
-        return downloadData().stream().map(Data::getDeaths)
+    public List<Integer> getDeaths() {
+        return fetchData().stream().map(Data::getDeaths)
                 .collect(Collectors.toList());
     }
 
-    public List<Integer> getRecovered(){
-        return downloadData().stream().map(Data::getRecovered)
+    public List<Integer> getRecovered() {
+        return fetchData().stream().map(Data::getRecovered)
                 .collect(Collectors.toList());
     }
 
-    public List<String> getCountryIso(){
-        return downloadData().stream().map(Data::getRegion)
+    public List<String> getCountryIso() {
+        return fetchData().stream().map(Data::getRegion)
                 .collect(Collectors.toList())
                 .stream()
                 .map(Region::getIso)
                 .collect(Collectors.toList());
     }
 
-    public List<String> getDateAsAt(){
-        return downloadData().stream().map(Data::getLast_update)
+    public List<String> getDateAsAt() {
+        return fetchData().stream().map(Data::getLast_update)
                 .collect(Collectors.toList());
     }
 
-    public Map<String, Integer> getInfectionCityRate(){
-        return IntStream.range(0, getCountryIso().size()).boxed()
-                .collect(Collectors.toMap(getCountryIso()::get, getConfirmed()::get));
+    public Map<String, Collection<Integer>> getConfirmedCountryRate() {
+        return utils.toMap(getCountryIso(), getConfirmed()).asMap();
     }
 
-//    public getRaportByCity(){
+    public Map<String, Collection<Integer>> getDeathsCountryRate() {
+        return utils.toMap(getCountryIso(), getDeaths()).asMap();
+    }
 
-//    }
+    public Map<String, Collection<Integer>> getRecoveredCountryRate() {
+        return utils.toMap(getCountryIso(), getRecovered()).asMap();
+    }
 }

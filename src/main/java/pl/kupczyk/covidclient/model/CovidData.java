@@ -12,4 +12,3 @@ import java.util.List;
 public class CovidData {
     private List<Data> data;
 }
-

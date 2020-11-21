@@ -8,7 +8,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 public class CovidClientApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(CovidClientApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CovidClientApplication.class, args);
+    }
+
 }
